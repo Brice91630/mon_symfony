@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ article.title }}</h1>
+    <p><strong>Catégorie :</strong> {{ article.category }}</p>
+    <div>
+        <p>{{ article.content }}</p>
+    </div>
+
+    <h3>Commentaires</h3>
+
+    {# Affichage des commentaires associés à l'article #}
+    {% for commentaire in article.commentaires %}
+        <div>
+            <p>{{ commentaire.content }}</p>
+            <small>Posté par {{ commentaire.user }}</small>
+
+            {% if commentaire.user == app.user or is_granted('ROLE_ADMIN') %}
+                {# Formulaire de modification du commentaire (visible pour l'auteur ou les administrateurs) #}
+                <form method="POST" action="{{ path('article_page', {id: article.id}) }}">
+                    <input type="hidden" name="commentaire_id" value="{{ commentaire.id }}">
+                    <textarea name="content" rows="5" class="form-control">{{ commentaire.content }}</textarea>
+                    <input type="hidden" name="action" value="edit">
+                    <button type="submit" class="btn btn-warning">Modifier</button>
+                </form>
+
+                {# Formulaire de suppression du commentaire (visible pour l'auteur ou les administrateurs) #}
+                <form method="POST" action="{{ path('article_page', {id: article.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                    <input type="hidden" name="commentaire_id" value="{{ commentaire.id }}">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    {# Formulaire d'ajout d'un nouveau commentaire #}
+    {% if app.user %}
+        <h3>Ajouter un commentaire</h3>
+
+        <form method="POST" action="{{ path('article_page', {id: article.id}) }}">  {# Envoi du formulaire à l'URL actuelle de l'article #}
+            <div class="form-group">
+                <label for="content">Contenu du commentaire</label>
+                <textarea id="content" name="content" class="form-control" rows="5"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+
+    {% else %}
+        <p>Vous devez être connecté pour ajouter un commentaire.</p>
+    {% endif %}
+{% endblock %}
