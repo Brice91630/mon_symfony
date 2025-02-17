@@ -1,0 +1,70 @@
+security:
+  # Configuration des hashers de mot de passe
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+      algorithm: auto
+      cost: 15
+
+  # Configuration du fournisseur d'utilisateurs
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+
+  # Définition des firewalls
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    main:
+      pattern: ^/
+      provider: app_user_provider
+      form_login:
+        login_path: app_login
+        check_path: /login
+        default_target_path: /articles
+      logout:
+        path: /logout
+
+    # Configuration pour les API
+    api_login:
+      pattern: ^/api/login  # Connexion via API
+      stateless: true  # Pas de session, stateless
+      json_login:  # Authentification JSON pour l'API
+        check_path: /api/login  # Route pour envoyer les données de connexion
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+    api_users_new:
+      pattern: ^/api/users/new  # Route pour la création d'un utilisateur
+      stateless: true  # Pas de session, stateless
+      json_login:  # Authentification JSON pour l'API
+        check_path: /api/users/new  # Route pour envoyer les données pour la création de l'utilisateur
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+  # Contrôles d'accès (qui peut accéder à quelles routes)
+  access_control:
+    # Routes accessibles sans authentification
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/logout, roles: PUBLIC_ACCESS }
+    - { path: ^/users/new, roles: PUBLIC_ACCESS }
+
+    # Restreint l'accès aux administrateurs
+    - { path: ^/users, roles: ROLE_ADMIN }
+    - { path: ^/articles/new, roles: ROLE_ADMIN }
+    - { path: ^/articles/edit, roles: ROLE_ADMIN }
+
+    # Autorise l'accès aux articles à tous les utilisateurs
+    - { path: ^/articles, roles: PUBLIC_ACCESS }
+    - { path: ^/articles/page, roles: IS_AUTHENTICATED_FULLY }
+
+    # Restreint l'accès aux commentaires pour les utilisateurs connectés
+    - { path: ^/articles/\d+/commentaire/create, roles: ROLE_USER }
+    - { path: ^/articles/\d+/commentaire/create, roles: ROLE_ADMIN }
+    - { path: ^/commentaire/\d+/edit, roles: ROLE_USER }
+    - { path: ^/commentaire/\d+/edit, roles: ROLE_ADMIN }
+    - { path: ^/commentaire/\d+/delete, roles: ROLE_USER }
+    - { path: ^/commentaire/\d+/delete, roles: ROLE_ADMIN }

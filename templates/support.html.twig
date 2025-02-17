@@ -1,0 +1,124 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Profile - SpaceConnect{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }} {# Garde les styles de base définis dans base.html.twig #}
+    <link rel="stylesheet" href="{{ asset('css/support.css') }}">
+{% endblock %}
+
+{% block body %}
+
+ <!-- En-tête -->
+   <header>
+    <div class="container">
+        <h1>
+            <nav>
+                <ul>
+                    <a href="accueil.html">
+                        <img src="img/logoSpaceConnect.webp" width="60px" alt="Logo SpaceConnect">
+                    </a>
+                    <a href="accueil.html">SpaceConnect</a>
+                </ul>
+            </nav>
+        </h1> 
+        
+        <!-- Bouton pour les petits écrans -->
+        <button class="menu-toggle" aria-label="Menu">
+            <i class="fa fa-bars"></i>
+        </button>
+
+        <!-- Menu de navigation -->
+        <nav class="nav-menu">
+            <ul>
+                <li>
+                    <form class="search-form" action="recherche.html" method="get">
+                        <input type="text" name="query" placeholder="Rechercher...">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </li>
+                <li><a href="quizz.html">Quiz</a></li>
+                <li><a href="Support.html">Support</a></li>
+                <li><a href="forum.html">Forum</a></li>
+                <li class="dropdown">
+                    <a href="#" class="header-profil"><i class="fa fa-user fa-lg"></i></a>
+                    <div class="dropdown-child">
+                        <a href="profile .html">Profile</a>
+                        <a href="inscription.html">Se connecter</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+    <!-- Section principale -->
+    <main>
+        <section id="faq">
+            <div class="container">
+                <h2>Questions Fréquentes</h2>
+                <div class="faq-item">
+                    <h3>Comment réinitialiser mon mot de passe ?</h3>
+                    <p>Pour réinitialiser votre mot de passe, cliquez sur "Mot de passe oublié" sur la page de connexion et suivez les instructions.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Comment mettre à jour mon profil ?</h3>
+                    <p>Vous pouvez mettre à jour vos informations personnelles directement depuis la section "Mon Profil" dans votre tableau de bord.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2>Contactez-nous</h2>
+                <p>Si vous avez d'autres questions, n'hésitez pas à nous contacter via le formulaire ci-dessous.</p>
+                <form action="#" method="POST">
+                    <label for="name">Nom:</label>
+                    <input type="text" id="name" name="name" required>
+                    
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                    
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        <div class="container">
+            <p>&copy; SpaceConnect. Tous droits réservés.</p>
+            <nav>
+                <ul>
+                    <li><a href="mentionslegales.html">Mentions légales</a></li>
+                    <li><a href="politique.html">Politique de confidentialité</a></li>
+                    <li><a href="conditionUtilisation.html">Conditions d'utilisation</a></li>
+                </ul>
+            </nav>
+            <div class="social-media">
+                <p>Suivez-nous sur nos réseaux :</p>
+                <ul>
+                    <li><a href="https://www.facebook.com/?locale=fr_FR" target="_blank">Facebook</a></li>
+                    <li><a href="https://x.com/?lang=fr" target="_blank">Twitter</a></li>
+                    <li><a href="https://www.instagram.com/" target="_blank">Instagram</a></li>
+                    <li><a href="https://www.linkedin.com/in/axel-jean-denis-681822213/?trk=opento_nprofile_details" target="_blank">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+<!-- Script pour le menu responsive -->
+<script>
+    const toggleButton = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+
+    toggleButton.addEventListener('click', () => {
+        navMenu.classList.toggle('open');
+    });
+</script>
+
+{% endblock %}

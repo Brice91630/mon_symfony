@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home - SpaceConnect{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }} {# Garde les styles de base définis dans base.html.twig #}
+    <link rel="stylesheet" href="{{ asset('css/accueil.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <!-- En-tête -->
+    <header>
+        <div class="container">
+            <h1>
+                <nav>
+                    <ul>
+                        <a href="{{ path('home') }}">
+                            <img src="{{ asset('img/logoSpaceConnect.webp') }}" width="60px" alt="Logo SpaceConnect">
+                        </a>
+                        <a href="{{ path('home') }}">SpaceConnect</a>
+                    </ul>
+                </nav>
+            </h1> 
+            
+            <!-- Bouton menu responsive -->
+            <button class="menu-toggle" aria-label="Menu">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Menu de navigation -->
+            <nav class="nav-menu">
+                <ul>
+                    <li>
+                        <form class="search-form" action="{{ path('search') }}" method="get">
+                            <input type="text" name="query" placeholder="Rechercher...">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </li>
+                    <li><a href="{{ path('quiz') }}">Quizz</a></li>
+                    <li><a href="{{ path('support') }}">Support</a></li>
+                    <li><a href="{{ path('forum') }}">Forum</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="header-profil"><i class="fa fa-user fa-lg"></i></a>
+                        <div class="dropdown-child">
+                            <a href="{{ path('profile') }}">Profile</a>
+                            <a href="{{ path('app_login') }}">Se connecter</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Bannière -->
+    <section id="banner" class="banner">
+        <div class="container">
+            <h1>Space Connect</h1>
+        </div>
+    </section>
+
+    <!-- Contenu principal -->
+    <main>
+        <!-- Section Introduction -->
+        <section id="intro" class="hero">
+            <div class="container">
+                <h2>Découvrez les derniers articles et actualités</h2>
+                <p>Restez informé avec nos articles variés et enrichissants couvrant un large éventail de sujets.</p>
+                <a href="#articles" class="btn">Voir les articles</a>
+            </div>
+        </section>
+
+        <!-- Articles dynamiques -->
+        <section id="articles" class="articles">
+            <div class="container">
+                <h2>Articles populaires</h2>
+                <div class="articles-grid">
+                    {% for article in articles %}
+                        <article>
+                            <img src="{{ asset('img/' ~ article.image) }}" alt="{{ article.titre }}">
+                            <h3>{{ article.titre }}</h3>
+                            <p>{{ article.resume }}</p>
+                            <a href="{{ path('article_show', {id: article.id}) }}" class="btn">Lire plus</a>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section id="newsletter" class="newsletter">
+            <div class="container">
+                <h2>Abonnez-vous à notre newsletter</h2>
+                <p>Recevez les dernières mises à jour et articles directement dans votre boîte mail.</p>
+                <form action="#" method="post">
+                    <input type="email" placeholder="Votre email" required>
+                    <button type="submit">S'abonner</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        <div class="container">
+            <p>&copy; SpaceConnect. Tous droits réservés.</p>
+            <nav>
+                <ul>
+                    <li><a href="{{ path('mentions_legales') }}">Mentions légales</a></li>
+                    <li><a href="{{ path('politique_confidentialite') }}">Politique de confidentialité</a></li>
+                    <li><a href="{{ path('conditions_utilisation') }}">Conditions d'utilisation</a></li>
+                </ul>
+            </nav>
+            <div class="social-media">
+                <p>Suivez-nous sur nos réseaux :</p>
+                <ul>
+                    <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+                    <li><a href="https://x.com/" target="_blank">Twitter</a></li>
+                    <li><a href="https://www.instagram.com/" target="_blank">Instagram</a></li>
+                    <li><a href="https://www.linkedin.com/" target="_blank">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script pour le menu responsive -->
+    <script>
+        const toggleButton = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        toggleButton.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+        });
+    </script>
+
+{% endblock %}
