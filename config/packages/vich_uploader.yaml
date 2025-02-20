@@ -1,0 +1,10 @@
+vich_uploader:
+    db_driver: orm
+    mappings:
+        article_images:
+            uri_prefix: /uploads/articles
+            upload_destination: '%kernel.project_dir%/public/uploads/articles'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer # Namer par défaut pour générer un nom unique
+            inject_on_load: false
+            delete_on_update: true # Supprime l'ancienne image lors d'une mise à jour
+            delete_on_remove: true # Supprime l'image lors de la suppression de l'article

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/inscription.css') }}">
+{% endblock %}
+
+{% block body %}
+    <!-- Conteneur principal -->
+    <div class="auth-container">
+        <!-- Bouton retour (en dehors des boîtes) -->
+        <button onclick="window.history.back()" class="back-btn">Retour</button>
+
+        <!-- Section d'Inscription -->
+        <section class="auth-box" id="inscription">
+            <h2>Inscription</h2>
+
+            {% if error %}
+                <p class="error">Erreur : {{ error.messageKey|trans(error.messageData, 'security') }}</p>
+            {% endif %}
+
+            <form action="{{ path('register') }}" method="post">
+                {{ csrf_token('register') }}
+
+                <label for="register-name">Nom complet</label>
+                <input type="text" id="register-name" name="name" required>
+
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" name="email" required>
+
+                <label for="register-password">Mot de passe</label>
+                <input type="password" id="register-password" name="password" required>
+
+                <button type="submit" class="btn">S'inscrire</button>
+                <p class="switch-text">Déjà un compte ? <a href="{{ path('login') }}" class="switch-link">Se connecter</a></p>
+            </form>
+        </section>
+    </div>
+{% endblock %}

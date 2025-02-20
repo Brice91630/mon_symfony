@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Articles;
 use App\Entity\Commentaire;
+use App\Form\ArticleType;
 use App\Repository\ArticlesRepository;
-use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,22 +20,16 @@ class ArticlesController extends AbstractController
     #[Route('/', name: 'article_index', methods: ['GET'])]
     public function index(ArticlesRepository $articleRepository, Request $request): Response
     {
-        // Récupérer les paramètres 'search' et 'category' depuis la requête
         $search = $request->query->get('search');
         $category = $request->query->get('category');
 
-        // Initialiser la variable des articles
         if ($search && $category) {
-            // Rechercher les articles par titre/contenu ET filtrer par catégorie
             $articles = $articleRepository->findBySearchAndCategory($search, $category);
         } elseif ($search) {
-            // Rechercher les articles par titre/contenu
             $articles = $articleRepository->findArticlesByName($search);
         } elseif ($category) {
-            // Filtrer les articles par catégorie
             $articles = $articleRepository->findBy(['category' => $category]);
         } else {
-            // Si aucun filtre ou recherche, récupérer tous les articles
             $articles = $articleRepository->findAll();
         }
 
@@ -48,19 +42,41 @@ class ArticlesController extends AbstractController
     #[Route('/new', name: 'article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
-        if ($request->isMethod('POST')) {
-            $article = new Articles();
-            $article->setTitle($request->request->get('title'));
-            $article->setContent($request->request->get('content'));
-            $article->setCategory($request->request->get('category'));
+        $article = new Articles();
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Laisse VichUploaderBundle gérer l'upload initial
             $em->persist($article);
             $em->flush();
 
+            // Si une image a été uploadée, renomme le fichier avec un nom unique
+            if ($article->getImageName()) {
+                $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/articles';
+                $originalFilePath = $uploadDir . '/' . $article->getImageName();
+
+                // Génère un nouveau nom basé sur l'ID
+                $article->generateUniqueImageName();
+                $newFilePath = $uploadDir . '/' . $article->getImageName();
+
+                // Renomme le fichier sur le serveur
+                if (file_exists($originalFilePath)) {
+                    rename($originalFilePath, $newFilePath);
+                }
+
+                // Met à jour l'entité avec le nouveau nom
+                $em->persist($article);
+                $em->flush();
+            }
+
+            $this->addFlash('success', 'Article créé avec succès !');
             return $this->redirectToRoute('article_index');
         }
 
-        return $this->render('articles/new.html.twig');
+        return $this->render('articles/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     // Afficher un article spécifique et gérer les commentaires
@@ -87,22 +103,43 @@ class ArticlesController extends AbstractController
         ]);
     }
 
-
     // Modifier un article existant
     #[Route('/{id}/edit', name: 'article_edit', methods: ['GET', 'POST'])]
     public function edit(Articles $article, Request $request, EntityManagerInterface $em): Response
     {
-        if ($request->isMethod('POST')) {
-            $article->setTitle($request->request->get('title'));
-            $article->setContent($request->request->get('content'));
-            $article->setCategory($request->request->get('category'));
+        $form = $this->createForm(ArticleType::class, $article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Si une nouvelle image est uploadée, renomme-la avec un nom unique
+            if ($article->getImageFile()) {
+                $em->flush(); // Persiste d'abord pour que VichUploader traite l'upload
+
+                $uploadDir = $this->getParameter('kernel.project_dir') . '/public/uploads/articles';
+                $originalFilePath = $uploadDir . '/' . $article->getImageName();
+
+                // Génère un nouveau nom basé sur l'ID
+                $article->generateUniqueImageName();
+                $newFilePath = $uploadDir . '/' . $article->getImageName();
+
+                // Renomme le fichier sur le serveur
+                if (file_exists($originalFilePath)) {
+                    rename($originalFilePath, $newFilePath);
+                }
+
+                $em->persist($article);
+            }
 
             $em->flush();
 
+            $this->addFlash('success', 'Article modifié avec succès !');
             return $this->redirectToRoute('article_index');
         }
 
-        return $this->render('articles/edit.html.twig', ['article' => $article]);
+        return $this->render('articles/edit.html.twig', [
+            'article' => $article,
+            'form' => $form->createView(),
+        ]);
     }
 
     // Supprimer un article
@@ -110,7 +147,7 @@ class ArticlesController extends AbstractController
     public function delete(Articles $article, EntityManagerInterface $em): Response
     {
         $em->remove($article);
-        $em->flush();
+        $em->flush(); // VichUploaderBundle supprime l'image grâce à delete_on_remove
 
         return $this->redirectToRoute('article_index');
     }

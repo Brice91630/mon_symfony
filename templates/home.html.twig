@@ -1,14 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home - SpaceConnect{% endblock %}
-
 {% block stylesheets %}
-    {{ parent() }} {# Garde les styles de base définis dans base.html.twig #}
-    <link rel="stylesheet" href="{{ asset('css/accueil.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/accueil.css') }}">
 {% endblock %}
 
 {% block body %}
-
     <!-- En-tête -->
     <header>
         <div class="container">
@@ -21,8 +17,8 @@
                         <a href="{{ path('home') }}">SpaceConnect</a>
                     </ul>
                 </nav>
-            </h1> 
-            
+            </h1>
+
             <!-- Bouton menu responsive -->
             <button class="menu-toggle" aria-label="Menu">
                 <i class="fa fa-bars"></i>
@@ -32,19 +28,23 @@
             <nav class="nav-menu">
                 <ul>
                     <li>
-                        <form class="search-form" action="{{ path('search') }}" method="get">
-                            <input type="text" name="query" placeholder="Rechercher...">
+                        <form class="search-form" action="{{ path('article_index') }}" method="get">
+                            <input type="text" name="search" placeholder="Rechercher...">
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </li>
-                    <li><a href="{{ path('quiz') }}">Quizz</a></li>
-                    <li><a href="{{ path('support') }}">Support</a></li>
-                    <li><a href="{{ path('forum') }}">Forum</a></li>
+                    <li><a href="#">Quizz</a></li> <!-- À remplacer par une route réelle -->
+                    <li><a href="#">Support</a></li> <!-- À remplacer par une route réelle -->
+                    <li><a href="#">Forum</a></li> <!-- À remplacer par une route réelle -->
                     <li class="dropdown">
                         <a href="#" class="header-profil"><i class="fa fa-user fa-lg"></i></a>
                         <div class="dropdown-child">
-                            <a href="{{ path('profile') }}">Profile</a>
-                            <a href="{{ path('app_login') }}">Se connecter</a>
+                            <a href="#">Profil</a> <!-- À remplacer par une route réelle -->
+                            {% if app.user %}
+                                <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                            {% else %}
+                                <a href="{{ path('app_login') }}">Se connecter</a>
+                            {% endif %}
                         </div>
                     </li>
                 </ul>
@@ -77,10 +77,14 @@
                 <div class="articles-grid">
                     {% for article in articles %}
                         <article>
-                            <img src="{{ asset('img/' ~ article.image) }}" alt="{{ article.titre }}">
-                            <h3>{{ article.titre }}</h3>
-                            <p>{{ article.resume }}</p>
-                            <a href="{{ path('article_show', {id: article.id}) }}" class="btn">Lire plus</a>
+                            {% if article.imageName %}
+                                <img src="{{ '/uploads/articles/' ~ article.imageName }}" alt="{{ article.title }}" class="img-fluid">
+                            {% else %}
+                                <img src="{{ asset('img/placeholder.jpg') }}" alt="Image par défaut" class="img-fluid">
+                            {% endif %}
+                            <h3>{{ article.title }}</h3>
+                            <p>{{ article.content|slice(0, 100) ~ '...' }}</p> <!-- Résumé court basé sur content -->
+                            <a href="{{ path('article_page', {id: article.id}) }}" class="btn">Lire plus</a>
                         </article>
                     {% endfor %}
                 </div>
@@ -103,12 +107,12 @@
     <!-- Pied de page -->
     <footer>
         <div class="container">
-            <p>&copy; SpaceConnect. Tous droits réservés.</p>
+            <p>© SpaceConnect. Tous droits réservés.</p>
             <nav>
                 <ul>
-                    <li><a href="{{ path('mentions_legales') }}">Mentions légales</a></li>
-                    <li><a href="{{ path('politique_confidentialite') }}">Politique de confidentialité</a></li>
-                    <li><a href="{{ path('conditions_utilisation') }}">Conditions d'utilisation</a></li>
+                    <li><a href="#">Mentions légales</a></li> <!-- À remplacer par une route réelle -->
+                    <li><a href="#">Politique de confidentialité</a></li> <!-- À remplacer par une route réelle -->
+                    <li><a href="#">Conditions d'utilisation</a></li> <!-- À remplacer par une route réelle -->
                 </ul>
             </nav>
             <div class="social-media">
@@ -132,5 +136,4 @@
             navMenu.classList.toggle('open');
         });
     </script>
-
 {% endblock %}

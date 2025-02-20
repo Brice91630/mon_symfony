@@ -1,25 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('styles/article.css') }}" >
+    <link rel="stylesheet" href="{{ asset('styles/accueil.css') }}">
 {% endblock %}
 
 {% block body %}
-
 <!-- En-tête -->
 <header>
     <div class="container">
         <h1>
             <nav>
                 <ul>
-                    <a href="accueil.html">
-                        <img src="img/logoSpaceConnect.webp" width="60px" alt="Logo SpaceConnect">
+                    <a href="{{ path('article_index') }}"> <!-- Remplace 'app_home' par 'article_index' -->
+                        <img src="{{ asset('img/logoSpaceConnect.webp') }}" width="60px" alt="Logo SpaceConnect">
                     </a>
-                    <a href="accueil.html">SpaceConnect</a>
+                    <a href="{{ path('register') }}" class="switch-link">SpaceConnect</a>
                 </ul>
             </nav>
-        </h1> 
-        
+        </h1>
+
         <!-- Bouton pour les petits écrans -->
         <button class="menu-toggle" aria-label="Menu">
             <i class="fa fa-bars"></i>
@@ -29,19 +28,23 @@
         <nav class="nav-menu">
             <ul>
                 <li>
-                    <form class="search-form" action="recherche.html" method="get">
-                        <input type="text" name="query" placeholder="Rechercher...">
+                    <form class="search-form" action="{{ path('article_index') }}" method="get">
+                        <input type="text" name="search" placeholder="Rechercher...">
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </form>
                 </li>
-                <li><a href="quizz.html">Quizz</a></li>
-                <li><a href="Support.html">Support</a></li>
-                <li><a href="forum.html">Forum</a></li>
+                <li><a href="#">Quizz</a></li> <!-- Remplacez par une route réelle si disponible -->
+                <li><a href="#">Support</a></li> <!-- Remplacez par une route réelle si disponible -->
+                <li><a href="#">Forum</a></li> <!-- Remplacez par une route réelle si disponible -->
                 <li class="dropdown">
                     <a href="#" class="header-profil"><i class="fa fa-user fa-lg"></i></a>
                     <div class="dropdown-child">
-                        <a href="profile .html">Profile</a>
-                        <a href="inscription.html">Se connecter</a>
+                        <a href="#">Profil</a> <!-- Remplacez par une route réelle si disponible -->
+                        {% if app.user %}
+                            <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}">Se connecter</a>
+                        {% endif %}
                     </div>
                 </li>
             </ul>
@@ -49,73 +52,71 @@
     </div>
 </header>
 
-<section class="hero">
-    <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h2>
-    <p>Une introduction captivante à l'article...</p>
-</section>
-
+<!-- Section principale de l'article -->
 <article>
-    <div class="container">
-        <h2>Titre de l'Article</h2>
-        <p><strong>Auteur:</strong> Jean Dupont</p>
-        <p><strong>Date:</strong> 30 octobre 2024</p>
-        <img src="img/alientiktok.jpg" alt="Image d'article" class="centered-image">
-        
-        <p>{{ article.content }}</p>        
-        <h3>Sous-titre</h3>
-        <p>{{ article.category}}</p>
+    <div class="container mt-5">
+        <h2>{{ article.title }}</h2>
+        <p><strong>Catégorie :</strong> {{ article.category }}</p>
+        <p><strong>Date :</strong> {{ article.updatedAt ? article.updatedAt|date('d F Y') : 'Non spécifiée' }}</p>
 
-        <h3>Conclusion</h3>
-        <p>Phasellus libero justo, vulputate in ullamcorper in, aliquet in erat. Donec quis velit vel sem fermentum tincidunt a sed felis.</p>
+        <!-- Affichage de l'image -->
+        {% if article.imageName %}
+            <img src="{{ '/uploads/articles/' ~ article.imageName }}" alt="{{ article.title }}" class="img-fluid mb-3">
+        {% endif %}
+
+        <p>{{ article.content }}</p>
     </div>
 </article>
 
 <!-- Section des commentaires -->
-<section class="comments-section">
+<section class="comments-section container mt-5">
     <h3>Commentaires</h3>
 
-    <!-- Affichage dynamique des commentaires -->
-    <div class="comment">
-        <div class="comment-header">
-            <p><strong>Utilisateur1</strong> - 30 octobre 2024</p>
+    {# Affichage des commentaires associés à l'article #}
+    {% for commentaire in article.commentaires %}
+       {% if commentaire.user == app.user or is_granted('ROLE_ADMIN') %}
+                {# Formulaire de modification du commentaire #}
+                <form method="POST" action="{{ path('article_page', {id: article.id}) }}" class="mt-2">
+                    <input type="hidden" name="commentaire_id" value="{{ commentaire.id }}">
+                    <textarea name="content" rows="3" class="form-control">{{ commentaire.content }}</textarea>
+                    <input type="hidden" name="action" value="edit">
+                    <button type="submit" class="btn btn-warning btn-sm mt-1">Modifier</button>
+                </form>
+
+                {# Formulaire de suppression du commentaire #}
+                <form method="POST" action="{{ path('article_page', {id: article.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                    <input type="hidden" name="commentaire_id" value="{{ commentaire.id }}">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="btn btn-danger btn-sm mt-1">Supprimer</button>
+                </form>
+            {% endif %}
         </div>
-        <div class="comment-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        </div>
-    </div>
+    {% endfor %}
 
-    <div class="comment">
-        <div class="comment-header">
-            <p><strong>Utilisateur2</strong> - 31 octobre 2024</p>
-        </div>
-        <div class="comment-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        </div>
-    </div>
-
-    <!-- Formulaire de commentaire -->
-    <form class="comment-form">
-        <label for="comment-author">Nom</label>
-        <input type="text" id="comment-author" name="author" required placeholder="Votre nom">
-
-        <label for="comment-content">Commentaire</label>
-        <textarea id="comment-content" name="content" required placeholder="Écrivez votre commentaire..."></textarea>
-
-        <button type="submit">Publier</button>
-    </form>
-
-    <p class="comment-count">2 commentaires</p>
+    {# Formulaire d'ajout d'un nouveau commentaire #}
+    {% if app.user %}
+        <h3>Ajouter un commentaire</h3>
+        <form method="POST" action="{{ path('article_page', {id: article.id}) }}" class="comment-form">
+            <div class="form-group">
+                <label for="content">Votre commentaire</label>
+                <textarea id="content" name="content" class="form-control" rows="5" placeholder="Écrivez votre commentaire..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Publier</button>
+        </form>
+    {% else %}
+        <p>Vous devez être <a href="{{ path('app_login') }}">connecté</a> pour ajouter un commentaire.</p>
+    {% endif %}
 </section>
 
- <!-- Pied de page -->
- <footer>
+<!-- Pied de page -->
+<footer class="mt-5">
     <div class="container">
-        <p>&copy; SpaceConnect. Tous droits réservés.</p>
+        <p>© SpaceConnect. Tous droits réservés.</p>
         <nav>
             <ul>
-                <li><a href="mentionslegales.html">Mentions légales</a></li>
-                <li><a href="politique.html">Politique de confidentialité</a></li>
-                <li><a href="conditionUtilisation.html">Conditions d'utilisation</a></li>
+                <li><a href="#">Mentions légales</a></li> <!-- Remplacez par une route réelle si disponible -->
+                <li><a href="#">Politique de confidentialité</a></li> <!-- Remplacez par une route réelle si disponible -->
+                <li><a href="#">Conditions d'utilisation</a></li> <!-- Remplacez par une route réelle si disponible -->
             </ul>
         </nav>
         <div class="social-media">
@@ -129,64 +130,4 @@
         </div>
     </div>
 </footer>
-
-<!-- Script pour le menu responsive -->
-<script>
-    const toggleButton = document.querySelector('.menu-toggle');
-    const navMenu = document.querySelector('.nav-menu');
-
-    toggleButton.addEventListener('click', () => {
-        navMenu.classList.toggle('open');
-    });
-</script>
-
-    <h1>{{ article.title }}</h1>
-    <p><strong>Catégorie :</strong> {{ article.category }}</p>
-    <div>
-        <p>{{ article.content }}</p>
-    </div>
-
-    <h3>Commentaires</h3>
-
-    {# Affichage des commentaires associés à l'article #}
-    {% for commentaire in article.commentaires %}
-        <div>
-            <p>{{ commentaire.content }}</p>
-            <small>Posté par {{ commentaire.user }}</small>
-
-            {% if commentaire.user == app.user or is_granted('ROLE_ADMIN') %}
-                {# Formulaire de modification du commentaire (visible pour l'auteur ou les administrateurs) #}
-                <form method="POST" action="{{ path('article_page', {id: article.id}) }}">
-                    <input type="hidden" name="commentaire_id" value="{{ commentaire.id }}">
-                    <textarea name="content" rows="5" class="form-control">{{ commentaire.content }}</textarea>
-                    <input type="hidden" name="action" value="edit">
-                    <button type="submit" class="btn btn-warning">Modifier</button>
-                </form>
-
-                {# Formulaire de suppression du commentaire (visible pour l'auteur ou les administrateurs) #}
-                <form method="POST" action="{{ path('article_page', {id: article.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
-                    <input type="hidden" name="commentaire_id" value="{{ commentaire.id }}">
-                    <input type="hidden" name="action" value="delete">
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
-            {% endif %}
-        </div>
-    {% endfor %}
-
-    {# Formulaire d'ajout d'un nouveau commentaire #}
-    {% if app.user %}
-        <h3>Ajouter un commentaire</h3>
-
-        <form method="POST" action="{{ path('article_page', {id: article.id}) }}">  {# Envoi du formulaire à l'URL actuelle de l'article #}
-            <div class="form-group">
-                <label for="content">Contenu du commentaire</label>
-                <textarea id="content" name="content" class="form-control" rows="5"></textarea>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Ajouter</button>
-        </form>
-
-    {% else %}
-        <p>Vous devez être connecté pour ajouter un commentaire.</p>
-    {% endif %}
 {% endblock %}
