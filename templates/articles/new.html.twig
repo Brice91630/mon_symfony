@@ -3,25 +3,37 @@
 {% block body %}
 <div class="container mt-5">
     <h1>Ajouter un article</h1>
-    <form method="post" class="mt-4">
+
+    {# Afficher le formulaire Symfony #}
+    {{ form_start(form, {'attr': {'class': 'mt-4', 'enctype': 'multipart/form-data'}}) }}
+
         <div class="form-group">
-            <label for="title">Titre</label>
-            <input type="text" id="title" name="title" class="form-control" required>
+            {{ form_label(form.title, 'Titre') }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.title) }}
         </div>
+
         <div class="form-group mt-3">
-            <label for="content">Contenu</label>
-            <textarea id="content" name="content" class="form-control" required></textarea>
+            {{ form_label(form.content, 'Contenu') }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.content) }}
         </div>
+
         <div class="form-group mt-3">
-            <label for="category">Catégorie</label>
-            <select name="category" id="category" class="form-control">
-                <option value="News" {% if app.request.get('category') == 'News' %}selected{% endif %}>Actualités</option>
-                <option value="Tech" {% if app.request.get('category') == 'Tech' %}selected{% endif %}>Technologie</option>
-                <option value="Lifestyle" {% if app.request.get('category') == 'Lifestyle' %}selected{% endif %}>Style de vie</option>
-            </select>
+            {{ form_label(form.category, 'Catégorie') }}
+            {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.category) }}
         </div>
+
+        <div class="form-group mt-3">
+            {{ form_label(form.imageFile, 'Image') }}
+            {{ form_widget(form.imageFile, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.imageFile) }}
+        </div>
+
         <button type="submit" class="btn btn-success mt-3">Enregistrer</button>
         <a href="{{ path('article_index') }}" class="btn btn-secondary mt-3">Retour</a>
-    </form>
+
+    {{ form_end(form) }}
 </div>
 {% endblock %}

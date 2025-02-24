@@ -63,7 +63,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface // La cl
         $this->password = $password; // On assigne le mot de passe passé en argument à la propriété $password
         return $this; 
     }
-
+    
+    public function getUsername(): ?string
+    {
+        return $this->name;
+    }
+    
     // Méthode pour obtenir le nom de l'utilisateur
     public function getName(): ?string { return $this->name; }
 
