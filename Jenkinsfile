@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GIT_REPO = "hhttps://github.com/Brice91630/mon_symfony.git"
+        GIT_REPO = "https://github.com/Brice91630/mon_symfony.git"
         GIT_BRANCH = "main"
         DEPLOY_DIR = "web014"
     }
