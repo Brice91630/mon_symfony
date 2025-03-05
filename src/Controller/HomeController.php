@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'home')]
+    #[Route('', name: 'home')]
     public function index(ArticlesRepository $articlesRepository): Response
     {
         // Récupérer tous les articles ou une sélection (ex. les 3 plus récents)
