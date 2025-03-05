@@ -20,6 +20,7 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
         'f844ccf1d25df8663951193c3fc307c8' => __DIR__ . '/..' . '/twig/twig/src/Resources/string_loader.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '2203a247e6fda86070a5e4e07aed533a' => __DIR__ . '/..' . '/symfony/clock/Resources/now.php',
+        '3a37ebac017bc098e9a86b35401e7a68' => __DIR__ . '/..' . '/mongodb/mongodb/src/functions.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -130,6 +131,7 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
             'Psr\\Cache\\' => 10,
+            'ProxyManager\\' => 13,
             'PhpParser\\' => 10,
             'PHPStan\\PhpDocParser\\' => 21,
         ),
@@ -140,6 +142,7 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
         'M' => 
         array (
             'Monolog\\' => 8,
+            'MongoDB\\' => 8,
             'Metadata\\' => 9,
             'Masterminds\\' => 12,
         ),
@@ -148,6 +151,11 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
             'Lexik\\Bundle\\JWTAuthenticationBundle\\' => 37,
             'Lcobucci\\JWT\\' => 13,
             'Lcobucci\\Clock\\' => 15,
+            'Laminas\\Code\\' => 13,
+        ),
+        'J' => 
+        array (
+            'Jean85\\' => 7,
         ),
         'E' => 
         array (
@@ -158,6 +166,7 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
             'Doctrine\\SqlFormatter\\' => 22,
             'Doctrine\\Persistence\\' => 21,
             'Doctrine\\ORM\\' => 13,
+            'Doctrine\\ODM\\MongoDB\\' => 21,
             'Doctrine\\Migrations\\' => 20,
             'Doctrine\\Instantiator\\' => 22,
             'Doctrine\\Inflector\\' => 19,
@@ -528,6 +537,10 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'ProxyManager\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/friendsofphp/proxy-manager-lts/src/ProxyManager',
+        ),
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
@@ -543,6 +556,10 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'MongoDB\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mongodb/mongodb/src',
         ),
         'Metadata\\' => 
         array (
@@ -564,6 +581,14 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
         array (
             0 => __DIR__ . '/..' . '/lcobucci/clock/src',
         ),
+        'Laminas\\Code\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-code/src',
+        ),
+        'Jean85\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jean85/pretty-package-versions/src',
+        ),
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
@@ -579,6 +604,10 @@ class ComposerStaticInit9377950a0bbd352c13decb09a052b4d5
         'Doctrine\\ORM\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/orm/src',
+        ),
+        'Doctrine\\ODM\\MongoDB\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/mongodb-odm/lib/Doctrine/ODM/MongoDB',
         ),
         'Doctrine\\Migrations\\' => 
         array (

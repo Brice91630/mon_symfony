@@ -10,6 +10,7 @@
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/mongodb-odm": "^2.10",
         "doctrine/orm": "^3.3",
         "lexik/jwt-authentication-bundle": "^3.1",
         "nelmio/cors-bundle": "^2.5",
