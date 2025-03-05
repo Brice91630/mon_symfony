@@ -566,7 +566,7 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\services\MongoDBService" class="App\services\MongoDBService" autowire="true" autoconfigure="true">
-      <tag name="container.error" message="The autoloader expected class &quot;App\services\MongoDBService&quot; to be defined in file &quot;/Users/brice/Desktop/formation CDA/Symfony/vendor/composer/../../src/services/MongoDBService.php&quot;. The file was found but the class was not in it, the class name or namespace probably has a typo."/>
+      <argument type="service" id=".debug.http_client"/>
     </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="argument_resolver.backed_enum_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\BackedEnumValueResolver">
@@ -596,7 +596,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.d.s8Qce"/>
+      <argument type="service" id=".service_locator.lg5U4Dw"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -3690,7 +3690,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.d.s8Qce"/>
+      <argument type="service" id=".service_locator.lg5U4Dw"/>
     </service>
     <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor">
       <tag name="kernel.reset" method="reset"/>
@@ -9440,17 +9440,18 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.Cj2p88g" method="withContext"/>
     </service>
-    <service id=".service_locator.MbWBn3P" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.07r4iw_" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="articlesRepository" type="service_closure" id="App\Repository\ArticlesRepository"/>
+        <argument key="mongoDBService" type="service_closure" id=".errored..service_locator.07r4iw_.App\Services\MongoDBService"/>
       </argument>
     </service>
-    <service id=".service_locator.MbWBn3P.App\Controller\HomeController::index()" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.07r4iw_.App\Controller\HomeController::index()" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\HomeController::index()"/>
       <argument>App\Controller\HomeController::index()</argument>
       <argument type="service" id="service_container"/>
-      <factory service=".service_locator.MbWBn3P" method="withContext"/>
+      <factory service=".service_locator.07r4iw_" method="withContext"/>
     </service>
     <service id=".service_locator.3QECKYg" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -9558,7 +9559,7 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.CQIMZqF" method="withContext"/>
     </service>
-    <service id=".service_locator.d.s8Qce" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.lg5U4Dw" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.zHyJIs5.kernel::registerContainerConfiguration()"/>
@@ -9571,7 +9572,7 @@
         <argument key="App\Controller\ArticlesController::edit" type="service_closure" id=".service_locator.xqghpMM.App\Controller\ArticlesController::edit()"/>
         <argument key="App\Controller\ArticlesController::delete" type="service_closure" id=".service_locator.xqghpMM.App\Controller\ArticlesController::delete()"/>
         <argument key="App\Controller\CommentaireController::createEditDelete" type="service_closure" id=".service_locator.Cj2p88g.App\Controller\CommentaireController::createEditDelete()"/>
-        <argument key="App\Controller\HomeController::index" type="service_closure" id=".service_locator.MbWBn3P.App\Controller\HomeController::index()"/>
+        <argument key="App\Controller\HomeController::index" type="service_closure" id=".service_locator.07r4iw_.App\Controller\HomeController::index()"/>
         <argument key="App\Controller\LoginController::login" type="service_closure" id=".service_locator.3QECKYg.App\Controller\LoginController::login()"/>
         <argument key="App\Controller\RegisterController::register" type="service_closure" id=".service_locator.5SuUxla.App\Controller\RegisterController::register()"/>
         <argument key="App\Controller\ResetPasswordController::request" type="service_closure" id=".service_locator.PtEirWk.App\Controller\ResetPasswordController::request()"/>
@@ -9590,7 +9591,7 @@
         <argument key="App\Controller\ArticlesController:edit" type="service_closure" id=".service_locator.xqghpMM.App\Controller\ArticlesController::edit()"/>
         <argument key="App\Controller\ArticlesController:delete" type="service_closure" id=".service_locator.xqghpMM.App\Controller\ArticlesController::delete()"/>
         <argument key="App\Controller\CommentaireController:createEditDelete" type="service_closure" id=".service_locator.Cj2p88g.App\Controller\CommentaireController::createEditDelete()"/>
-        <argument key="App\Controller\HomeController:index" type="service_closure" id=".service_locator.MbWBn3P.App\Controller\HomeController::index()"/>
+        <argument key="App\Controller\HomeController:index" type="service_closure" id=".service_locator.07r4iw_.App\Controller\HomeController::index()"/>
         <argument key="App\Controller\LoginController:login" type="service_closure" id=".service_locator.3QECKYg.App\Controller\LoginController::login()"/>
         <argument key="App\Controller\RegisterController:register" type="service_closure" id=".service_locator.5SuUxla.App\Controller\RegisterController::register()"/>
         <argument key="App\Controller\ResetPasswordController:request" type="service_closure" id=".service_locator.PtEirWk.App\Controller\ResetPasswordController::request()"/>
@@ -10726,6 +10727,9 @@
     </service>
     <service id=".errored..service_locator.Cj2p88g.Symfony\Component\Security\Core\User\UserInterface" class="Symfony\Component\Security\Core\User\UserInterface">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.Cj2p88g&quot;: it references interface &quot;Symfony\Component\Security\Core\User\UserInterface&quot; but no such service exists. Did you create an instantiable class that implements this interface?"/>
+    </service>
+    <service id=".errored..service_locator.07r4iw_.App\Services\MongoDBService" class="App\Services\MongoDBService">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.07r4iw_&quot;: it references class &quot;App\Services\MongoDBService&quot; but no such service exists. Did you mean &quot;App\services\MongoDBService&quot;?"/>
     </service>
     <service id=".errored..service_locator.CQIMZqF.App\Entity\User" class="App\Entity\User">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.CQIMZqF&quot;: it needs an instance of &quot;App\Entity\User&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
@@ -12003,7 +12007,7 @@
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.pRu6x_4" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.d.s8Qce"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.lg5U4Dw"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.BxSdgVt"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -12060,7 +12064,7 @@
     <service id=".service_locator.00fXz0z" alias=".service_locator.uOjHxUd"/>
     <service id=".service_locator.4VseCCJ" alias=".service_locator.xqghpMM"/>
     <service id=".service_locator.RiHPxAG" alias=".service_locator.Cj2p88g"/>
-    <service id=".service_locator.OwWOAsX" alias=".service_locator.MbWBn3P"/>
+    <service id=".service_locator.A96iX4Q" alias=".service_locator.07r4iw_"/>
     <service id=".service_locator.Nrz07Zz" alias=".service_locator.3QECKYg"/>
     <service id=".service_locator.xpyIvFE" alias=".service_locator.5SuUxla"/>
     <service id=".service_locator.GGNRYUI" alias=".service_locator.PtEirWk"/>
